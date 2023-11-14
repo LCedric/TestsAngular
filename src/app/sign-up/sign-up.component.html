@@ -4,7 +4,15 @@
 <label for="email">E-mail</label>
 <input id="email" />
 <label for="password">Password</label>
-<input id="password" type="password" />
+<input
+  id="password"
+  type="password"
+  [value]="password()"
+  (input)="onChangePassword($event)" />
 <label for="passwordRepeat">Password Repeat</label>
-<input id="passwordRepeat" type="password" />
-<button type="submit" disabled>Sign Up</button>
+<input
+  id="passwordRepeat"
+  type="password"
+  [value]="passwordRepeat()"
+  (input)="onChangePasswordRepeat($event)" />
+<button type="submit" [disabled]="isDisabled()">Sign Up</button>

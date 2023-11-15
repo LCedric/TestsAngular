@@ -1,5 +1,8 @@
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SignUpComponent } from './sign-up.component';
 
 describe('SignUpComponent', () => {
@@ -7,7 +10,7 @@ describe('SignUpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SignUpComponent],
+      imports: [SignUpComponent, HttpClientTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignUpComponent);
@@ -100,7 +103,7 @@ describe('SignUpComponent', () => {
       const email = 'user@example.com';
       const password = 'P4ssword';
 
-      const spy = spyOn(window, 'fetch');
+      const httpTestingController = TestBed.inject(HttpTestingController);
 
       const signUp = fixture.nativeElement as HTMLElement;
 
@@ -132,15 +135,16 @@ describe('SignUpComponent', () => {
       const button = signUp.querySelector('button') as HTMLInputElement;
       button.click();
 
-      const args = spy.calls.allArgs()[0];
-      const secondParam = args[1] as RequestInit;
-      expect(secondParam.body).toEqual(
-        JSON.stringify({
-          username,
-          password,
-          email,
-        })
-      );
+      const call = httpTestingController.expectOne('/api/1.0/users');
+      const requestBody = call.request.body;
+
+      console.log(requestBody);
+
+      expect(requestBody).toEqual({
+        username,
+        password,
+        email,
+      });
     });
   });
 });

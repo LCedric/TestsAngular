@@ -1,5 +1,6 @@
-import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, computed, signal } from '@angular/core';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,6 +18,8 @@ export class SignUpComponent {
     this.password() ? this.password() !== this.passwordRepeat() : true
   );
 
+  constructor(private httpClient: HttpClient) {}
+
   onChangeUsername(event: Event): void {
     this.username.set((event.target as HTMLInputElement).value);
   }
@@ -33,14 +36,12 @@ export class SignUpComponent {
   onClickSignup(event: Event): void {
     event.preventDefault();
 
-    fetch('/api/1.0/users', {
-      method: 'POST',
-      body: JSON.stringify({
+    this.httpClient
+      .post('/api/1.0/users', {
         username: this.username(),
-        password: this.password(),
         email: this.email(),
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    });
+        password: this.password(),
+      })
+      .subscribe(() => {});
   }
 }

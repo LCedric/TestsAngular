@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/angular';
-import { SignUpComponent } from './sign-up.component';
 import userEvent from '@testing-library/user-event';
 import 'whatwg-fetch';
+import { SignUpComponent } from './sign-up.component';
 
 describe('SignUpComponent', () => {
   describe('Layout', () => {
